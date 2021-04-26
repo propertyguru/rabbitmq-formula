@@ -1,3 +1,5 @@
+{% set dist = salt.grains.get('oscodename') %}
+
 include:
   - rabbitmq
 
@@ -5,9 +7,17 @@ include:
 rabbitmq_repo:
   pkgrepo.managed:
     - humanname: RabbitMQ Repository
-    - name: deb http://www.rabbitmq.com/debian/ testing main
+    - name: deb https://dl.bintray.com/rabbitmq/debian {{ dist }}  main
     - file: /etc/apt/sources.list.d/rabbitmq.list
-    - key_url: https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+    - key_url: https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
+    - require_in:
+      - pkg: rabbitmq-server
+erlang_repo:
+  pkgrepo.managed:
+    - humanname: Erlang Repository
+    - name: deb https://dl.bintray.com/rabbitmq/debian {{ dist }}  erlang
+    - file: /etc/apt/sources.list.d/rabbitmq.list
+    - key_url: https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
     - require_in:
       - pkg: rabbitmq-server
 {% elif grains['os'] == 'CentOS' and grains['osmajorrelease'][0] == '6' %}
@@ -23,3 +33,4 @@ rabbitmq_repo:
     - require_in:
       - pkg: rabbitmq-server
 {% endif %}
+
