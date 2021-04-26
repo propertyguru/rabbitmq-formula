@@ -14,6 +14,9 @@ rabbitmq-server:
     {%- if 'version' in salt['pillar.get']('rabbitmq', {}) %}
     - version: {{ salt['pillar.get']('rabbitmq:version') }}
     {%- endif %}
+    {%- if 'hold' in salt['pillar.get']('rabbitmq', {}) %}
+    - hold: {{ salt['pillar.get']('rabbitmq:hold') }}
+    {%- endif %}
 
   service:
     - {{ "running" if salt['pillar.get']('rabbitmq:running', True) else "dead" }}
