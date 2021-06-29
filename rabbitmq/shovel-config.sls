@@ -4,4 +4,4 @@ create_dynamic_shovel:
     - template: jinja
     - defaults:
       dry_run: {{ opts['test'] }}
-    - unless: rabbitmqctl eval 'rabbit_shovel_status:status().' | grep running
+    {# - unless: rabbitmqctl eval 'rabbit_shovel_status:status().' | grep running #}
